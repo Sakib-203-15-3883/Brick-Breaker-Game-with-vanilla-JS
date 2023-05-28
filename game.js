@@ -244,3 +244,209 @@ const level6 = [
   [1, 1, 4, 4, 4, 4, 1, 1],
   [3, 3, 3, 3, 3, 3, 3, 3],
 ];
+
+//=================== FUNCTIONS ====================
+
+//This line of code calls the setBricksByLevel function and passes the CURRENT_LEVEL variable as an argument. The purpose of this function is to set up the bricks for the current level of the game. It determines the arrangement and configuration of the bricks based on the specified level. The CURRENT_LEVEL variable represents the current level of the game, and by passing it as an argument to the setBricksByLevel function, the bricks for that level are set up accordingly.
+
+setBricksByLevel(CURRENT_LEVEL);
+
+//This line of code sets up an interval using the setInterval function. The draw function is specified as the first argument, and 10 is the delay in milliseconds between each execution of the draw function.
+// The purpose of this line is to repeatedly call the draw function at regular intervals. In the context of the brick breaker game, the draw function is responsible for updating and rendering the game's elements, such as the paddle, ball, and bricks. By calling draw repeatedly with a small delay, it creates an animation effect, giving the illusion of movement and interaction within the game.
+
+setInterval(draw, 10);
+
+// Function to draw the game over screen
+////The given code represents the draw function, which is responsible for rendering and updating various elements of the game
+
+function draw() {
+  // // This line calls the update function, which is responsible for updating the game state, including the position of the paddle, ball, and bricks.
+
+  update();
+  // This line clears the entire canvas by using the clearRect method on the 2D context (ctx). It specifies the rectangular region to clear, starting from the top-left corner (0, 0) and spanning the entire canvas width and height.
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // // These lines call separate functions (drawPaddle, drawBall, and drawBricks) to render each element of the game onto the canvas. These functions are responsible for setting the appropriate styles, positions, and dimensions of the elements and then using the 2D context methods to draw them on the canvas.
+
+  drawPaddle();
+  drawBall();
+  drawBricks();
+
+  //This line calls the showLifesLevel function, which is responsible for displaying the current number of lives and the current level on the screen. It may involve updating text elements or graphics to indicate the relevant information to the player.
+
+  showLifesLevel();
+
+  //These lines call the winLevel and gameOver functions to check if the player has won the current level or if the game is over, respectively. These functions may involve checking game conditions, updating the game state, and displaying appropriate messages or triggering actions accordingly.
+
+  winLevel();
+  gameOver();
+}
+
+//This  function named update that will handle the updating of the game states.
+
+function update() {
+  //hese lines call separate functions (ballWallCollision, ballPaddleCollision, and ballBrickCollision) to check for collisions between different game elements.
+
+  ballWallCollision();
+  ballPaddleCollision();
+  ballBrickCollision();
+
+  // These lines call separate functions (movePaddle and moveBall) to update the positions of the paddle and the ball, respectively.
+
+  movePaddle();
+  moveBall();
+
+  //This line plays the game's background music stored in the GAME_SONG audio object. It triggers the play method, which starts playing the audio.
+
+  GAME_SONG.play();
+}
+
+// Function to draw the paddle
+
+function drawPaddle() {
+  //This line begins a new path for drawing on the canvas. It prepares the canvas context (ctx) to draw a new shape.
+
+  ctx.beginPath();
+
+  //This line draws a rectangle on the canvas. The parameters paddle.x and paddle.y specify the top-left corner of the rectangle, paddle.width determines the width of the rectangle, and paddle.height determines the height of the rectangle. This represents the position and dimensions of the paddle.
+
+  ctx.rect(paddle.x, paddle.y, paddle.width, paddle.height);
+
+  //These lines set the fill style for the paddle and fill the drawn rectangle with the specified fill color (PADDLE_FILL). The fill style determines the color or pattern used to fill the shape.
+
+  ctx.fillStyle = PADDLE_FILL;
+  ctx.fill();
+
+  //   These lines set the stroke width and stroke color for the paddle and apply the stroke to the rectangle. The stroke width (PADDLE_STROKE_WIDTH) determines the thickness of the stroke, and the stroke color (PADDLE_STROKE) determines the color of the stroke.
+
+  ctx.lineWidth = PADDLE_STROKE_WIDTH;
+  ctx.strokeStyle = PADDLE_STROKE;
+  ctx.stroke();
+
+  //This line closes the current path. It connects the end point of the last drawing command to the starting point, creating a closed shape.
+
+  ctx.closePath();
+}
+
+// Function to draw the ball
+function drawBall() {
+  // This line begins a new path for drawing on the canvas. It prepares the canvas context (ctx) to draw a new shape.
+
+  ctx.beginPath();
+
+  //This line draws a circular arc on the canvas, representing the ball. The parameters ball.x and ball.y specify the center coordinates of the arc, ball.radius determines the radius of the arc, and the angles 0 and Math.PI * 2 specify the starting and ending angles of the arc, creating a complete circle.
+  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+
+  ctx.fillStyle = BALL_COLOR;
+
+  ctx.strokeStyle = BALL_STROKE;
+  ctx.lineWidth = BALL_STROKE_WIDTH;
+
+  //   These lines fill the circle with the specified fill color and stroke the circle with the specified stroke color and width. The fill() method fills the shape with the fill color, and the stroke() method outlines the shape with the stroke color and width
+
+  ctx.fill();
+  ctx.stroke();
+
+  //This line closes the current path. It connects the end point of the last drawing command to the starting point, creating a closed shape.
+
+  ctx.closePath();
+}
+
+// Function that treats when the ball hits the wall
+function ballWallCollision() {
+  //This if statement checks if the ball's position plus its radius exceeds or equals the width of the canvas. If it does, it means the ball has collided with the right wall. In this case, the ball.speedX is multiplied by -1 to reverse the horizontal direction of the ball's movement. Taking the absolute value of ball.speedX ensures that the ball continues to move in the same speed regardless of its previous direction.
+
+  if (ball.x + ball.radius >= canvas.width) {
+    ball.speedX = -Math.abs(ball.speedX);
+  }
+  //This if statement checks if the ball's position minus its radius is less than or equal to zero. If it is, it means the ball has collided with the left wall. In this case, the ball.speedX is multiplied by 1 (or Math.abs(ball.speedX) can be used as well) to keep the same magnitude of the speed but reverse its direction.
+
+  if (ball.x - ball.radius <= 0) {
+    ball.speedX = Math.abs(ball.speedX);
+  }
+
+  //This if statement checks if the ball's position minus its radius is less than zero, indicating a collision with the ceiling. In this case, the ball.speedY is multiplied by -1 to reverse the vertical direction of the ball's movement.
+
+  if (ball.y - ball.radius < 0) {
+    ball.speedY = -ball.speedY;
+  }
+
+  // This if statement checks if the ball's position plus its radius exceeds or equals the height of the canvas. If it does, it means the ball has collided with the floor. In this case, the loseLife() function is called, which typically reduces the player's remaining lives or performs some game-related actions when the ball touches the bottom.
+
+  if (ball.y + ball.radius >= canvas.height) {
+    loseLife();
+  }
+}
+
+// Function that treats when the player loses a life
+function loseLife() {
+  LIFES--; // Lose Life
+  resetBall();
+}
+
+// Function that resets the ball when the player loses a life
+function resetBall() {
+  //This line sets the x coordinate of the ball to the horizontal center of the canvas. It calculates the position by taking the canvas width and subtracting half of the ball's radius.
+
+  ball.x = canvas.width / 2 - BALL_RADIUS / 2;
+
+  //This line sets the y coordinate of the ball just above the paddle. It positions the ball vertically above the paddle by subtracting the ball's radius and a small additional distance from the y coordinate of the paddle.
+
+  ball.y = paddle.y - BALL_RADIUS - 1;
+
+  //This line sets the moving property of the ball to false. It indicates that the ball is not currently in motion and needs to be launched by the player.
+
+  ball.moving = false;
+
+  //These lines reset the horizontal and vertical speeds of the ball. In this case, the horizontal speed (speedX) is set to 0, meaning the ball will not move horizontally. The vertical speed (speedY) is set to a negative value of BALL_SPEED, which determines the direction and magnitude of the ball's upward movement.
+
+  ball.speedX = 0;
+  ball.speedY = -BALL_SPEED;
+}
+
+// Function that treats when the ball hits the paddle
+
+function ballPaddleCollision() {
+  if (
+    //This condition checks if the ball's boundaries overlap with the paddle's boundaries, indicating a collision between the two. It checks if the right side of the ball (ball.x + ball.radius) is greater than or equal to the left side of the paddle (paddle.x), if the left side of the ball (ball.x - ball.radius) is less than or equal to the right side of the paddle (paddle.x + paddle.width), if the bottom side of the ball (ball.y + ball.radius) is greater than or equal to the top side of the paddle (paddle.y), and if the top side of the ball (ball.y - ball.radius) is less than or equal to the bottom side of the paddle (paddle.y + paddle.height).
+
+    ball.x + ball.radius >= paddle.x &&
+    ball.x - ball.radius <= paddle.x + paddle.width &&
+    ball.y + ball.radius >= paddle.y &&
+    ball.y - ball.radius <= paddle.y + paddle.height
+  ) {
+    //This line calculates the angle of reflection for the ball based on its collision position with the paddle. It subtracts a value from 150 degrees based on the horizontal distance between the ball's center (ball.x) and the paddle's left side (paddle.x), scaled down by the paddle's width (PADDLE_WIDTH). This calculation determines the angle at which the ball will be redirected upon collision.
+
+    let angle = 150 - ((ball.x - paddle.x) * 120) / PADDLE_WIDTH;
+    console.log(angle);
+
+    //These lines update the horizontal (speedX) and vertical (speedY) speeds of the ball based on the calculated angle. The Math.cos and Math.sin functions are used to convert the angle from degrees to radians, as the trigonometric functions in JavaScript work with radians. The BALL_SPEED constant determines the magnitude of the ball's speed, while the calculated trigonometric values determine the direction of the ball's movement after the collision.
+
+    //ball.speedX = BALL_SPEED * Math.cos((angle * Math.PI) / 180);
+
+    // In this line, the speedX component of the ball vector is being determined. The magnitude (or length) of the speedX component is determined by multiplying BALL_SPEED (a constant) by the cosine of the angle. Mathematically, this can be represented as follows:
+
+    // ball.speedX = BALL_SPEED * cos(angle)
+
+    // The Math.cos() function is used to calculate the cosine of an angle. The angle is provided in radians, so (angle * Math.PI) / 180 is used to convert the angle from degrees to radians.
+
+    // Therefore, the speedX component of the vector represents the horizontal component of the ball object's speed. It determines how fast the ball is moving horizontally based on the given angle.
+
+    ball.speedX = BALL_SPEED * Math.cos((angle * Math.PI) / 180);
+
+    //ball.speedY = -BALL_SPEED * Math.sin((angle * Math.PI) / 180);
+
+    // In this line, the speedY component of the ball vector is being determined. Similar to the previous line, the magnitude (or length) of the speedY component is determined by multiplying BALL_SPEED by the sine of the angle. Mathematically, this can be represented as follows:
+
+    // ball.speedY = -BALL_SPEED * sin(angle)
+
+    // The Math.sin() function is used to calculate the sine of an angle. Again, the angle is provided in radians.
+
+    // The negative sign in front of BALL_SPEED indicates that the speedY component is negated. This is often done to align the coordinate system where positive values of speedY represent upward movement.
+
+    // Therefore, the speedY component of the vector represents the vertical component of the ball object's speed. It determines how fast the ball is moving vertically based on the given angle.
+
+    ball.speedY = -BALL_SPEED * Math.sin((angle * Math.PI) / 180);
+  }
+}
