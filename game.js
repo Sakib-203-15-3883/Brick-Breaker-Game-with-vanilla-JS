@@ -409,7 +409,49 @@ function resetBall() {
 
 function ballPaddleCollision() {
   if (
-    //This condition checks if the ball's boundaries overlap with the paddle's boundaries, indicating a collision between the two. It checks if the right side of the ball (ball.x + ball.radius) is greater than or equal to the left side of the paddle (paddle.x), if the left side of the ball (ball.x - ball.radius) is less than or equal to the right side of the paddle (paddle.x + paddle.width), if the bottom side of the ball (ball.y + ball.radius) is greater than or equal to the top side of the paddle (paddle.y), and if the top side of the ball (ball.y - ball.radius) is less than or equal to the bottom side of the paddle (paddle.y + paddle.height).
+    //This condition checks if the ball's boundaries overlap with the paddle's boundaries, indicating a collision between the two.
+
+    //////////////////  Example 1   //////////////////
+
+    // Assume ball has a radius of 10.
+
+    // Assume paddle has a width of 100 and a height of 15.
+
+    // Let's consider the following positions:
+
+    // ball.x = 400
+    // ball.y = 300
+    // paddle.x = 350
+    // paddle.y = 320
+
+    // Plugging these values into the conditions:
+
+    // ball.x + ball.radius = 400 + 10 = 410 >= paddle.x = 350 (True)
+    // ball.x - ball.radius = 400 - 10 = 390 <= paddle.x + paddle.width = 350 + 100 = 450 (True)
+    // ball.y + ball.radius = 300 + 10 = 310 >= paddle.y = 320 (False)
+    // ball.y - ball.radius = 300 - 10 = 290 <= paddle.y + paddle.height = 320 + 15 = 335 (True)
+
+    // In this example, the conditions are not entirely met because the ball's vertical position (ball.y) does not fall within the paddle's vertical range.
+
+    ///////////////// Example 2:  ////////////////
+
+    // Assume the same values for ball and paddle as in Example 1.
+
+    // Let's consider the following positions:
+
+    // ball.x = 400
+    // ball.y = 330
+    // paddle.x = 350
+    // paddle.y = 320
+
+    // Plugging these values into the conditions:
+
+    // ball.x + ball.radius = 400 + 10 = 410 >= paddle.x = 350 (True)
+    // ball.x - ball.radius = 400 - 10 = 390 <= paddle.x + paddle.width = 350 + 100 = 450 (True)
+    // ball.y + ball.radius = 330 + 10 = 340 >= paddle.y = 320 (True)
+    // ball.y - ball.radius = 330 - 10 = 320 <= paddle.y + paddle.height = 320 + 15 = 335 (True)
+
+    // In this example, all the conditions are met, as the ball's position falls within the range of the paddle both horizontally and vertically.
 
     ball.x + ball.radius >= paddle.x &&
     ball.x - ball.radius <= paddle.x + paddle.width &&
@@ -418,14 +460,20 @@ function ballPaddleCollision() {
   ) {
     //This line calculates the angle of reflection for the ball based on its collision position with the paddle. It subtracts a value from 150 degrees based on the horizontal distance between the ball's center (ball.x) and the paddle's left side (paddle.x), scaled down by the paddle's width (PADDLE_WIDTH). This calculation determines the angle at which the ball will be redirected upon collision.
 
+    /////////////Example 1:  //////////////////
+
+    // suppose , angle = 150 - ((ball.x - paddle.x) * 120) / PADDLE_WIDTH;
+
+    //     = 150 - ((300 - 200) * 120) / 100;
+    //     = 150 - (100 * 120) / 100;
+    //     = 150 - 120;
+    //     = 30;
+
     let angle = 150 - ((ball.x - paddle.x) * 120) / PADDLE_WIDTH;
+
+    console.log(ball.x);
+    console.log(paddle.x);
     console.log(angle);
-
-    //These lines update the horizontal (speedX) and vertical (speedY) speeds of the ball based on the calculated angle. The Math.cos and Math.sin functions are used to convert the angle from degrees to radians, as the trigonometric functions in JavaScript work with radians. The BALL_SPEED constant determines the magnitude of the ball's speed, while the calculated trigonometric values determine the direction of the ball's movement after the collision.
-
-    //ball.speedX = BALL_SPEED * Math.cos((angle * Math.PI) / 180);
-
-    // In this line, the speedX component of the ball vector is being determined. The magnitude (or length) of the speedX component is determined by multiplying BALL_SPEED (a constant) by the cosine of the angle. Mathematically, this can be represented as follows:
 
     // ball.speedX = BALL_SPEED * cos(angle)
 
@@ -433,11 +481,35 @@ function ballPaddleCollision() {
 
     // Therefore, the speedX component of the vector represents the horizontal component of the ball object's speed. It determines how fast the ball is moving horizontally based on the given angle.
 
+    /////////////////   Example 1:  ///////////////
+
+    // Assume BALL_SPEED is 5 (arbitrary value).
+    // Assume angle is 45 degrees.
+    // Plugging these values into the formula:
+    // ball.speedX = 5 * Math.cos((45 * Math.PI) / 180)
+    // To calculate ball.speedX:
+
+    // Convert the angle from degrees to radians: 45 * Math.PI / 180 = 0.7854 radians.
+    // Use the Math.cos() function to find the cosine of the angle: Math.cos(0.7854) = 0.7071.
+    // Multiply the result by BALL_SPEED: 0.7071 * 5 = 3.5355.
+    // Therefore, in this example, ball.speedX would be approximately 3.5355.
+
+    ////////////////// Example 2:////////////////////
+
+    // Assume BALL_SPEED is 2 (arbitrary value).
+    // Assume angle is 60 degrees.
+    // Plugging these values into the formula:
+    // ball.speedX = 2 * Math.cos((60 * Math.PI) / 180)
+    // To calculate ball.speedX:
+
+    // Convert the angle from degrees to radians: 60 * Math.PI / 180 = 1.0472 radians.
+    // Use the Math.cos() function to find the cosine of the angle: Math.cos(1.0472) = 0.5.
+    // Multiply the result by BALL_SPEED: 0.5 * 2 = 1.
+    // Therefore, in this example, ball.speedX would be 1.
+
+    // These examples demonstrate how the Math.cos() function is used to calculate the horizontal speed (ball.speedX) based on the given angle. The angle is converted from degrees to radians before passing it to the Math.cos() function. The resulting value is then multiplied by BALL_SPEED to determine the final horizontal speed.
+
     ball.speedX = BALL_SPEED * Math.cos((angle * Math.PI) / 180);
-
-    //ball.speedY = -BALL_SPEED * Math.sin((angle * Math.PI) / 180);
-
-    // In this line, the speedY component of the ball vector is being determined. Similar to the previous line, the magnitude (or length) of the speedY component is determined by multiplying BALL_SPEED by the sine of the angle. Mathematically, this can be represented as follows:
 
     // ball.speedY = -BALL_SPEED * sin(angle)
 
@@ -446,6 +518,34 @@ function ballPaddleCollision() {
     // The negative sign in front of BALL_SPEED indicates that the speedY component is negated. This is often done to align the coordinate system where positive values of speedY represent upward movement.
 
     // Therefore, the speedY component of the vector represents the vertical component of the ball object's speed. It determines how fast the ball is moving vertically based on the given angle.
+
+    ////////////////    Example 1:  ///////////////////
+
+    // Assume BALL_SPEED is 5 (arbitrary value).
+    // Assume angle is 30 degrees.
+    // Plugging these values into the formula:
+    // ball.speedY = -5 * Math.sin((30 * Math.PI) / 180)
+    // To calculate ball.speedY:
+
+    // Convert the angle from degrees to radians: 30 * Math.PI / 180 = 0.5236 radians.
+    // Use the Math.sin() function to find the sine of the angle: Math.sin(0.5236) = 0.5.
+    // Multiply the result by -BALL_SPEED: 0.5 * -5 = -2.5.
+    // Therefore, in this example, ball.speedY would be approximately -2.5.
+
+    // ///////////  Example 2:////////////////////
+
+    // Assume BALL_SPEED is 3 (arbitrary value).
+    // Assume angle is 90 degrees.
+    // Plugging these values into the formula:
+    // ball.speedY = -3 * Math.sin((90 * Math.PI) / 180)
+    // To calculate ball.speedY:
+
+    // Convert the angle from degrees to radians: 90 * Math.PI / 180 = 1.5708 radians.
+    // Use the Math.sin() function to find the sine of the angle: Math.sin(1.5708) = 1.
+    // Multiply the result by -BALL_SPEED: 1 * -3 = -3.
+    // Therefore, in this example, ball.speedY would be -3.
+
+    // These examples demonstrate how the Math.sin() function is used to calculate the vertical speed (ball.speedY) based on the given angle. The angle is converted from degrees to radians before passing it to the Math.sin() function. The resulting value is then multiplied by -BALL_SPEED to determine the final vertical speed.
 
     ball.speedY = -BALL_SPEED * Math.sin((angle * Math.PI) / 180);
   }
