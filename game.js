@@ -31,7 +31,7 @@ let LIFES = 5;
 
 //This variable indicates the current level the player is on.  The current level helps keep track of the player's progress and determines the arrangement and difficulty of the bricks.
 
-let CURRENT_LEVEL = 1;
+let CURRENT_LEVEL = 5;
 
 // This variable represents the maximum level available in the game. It defines the highest level that the player can reach. Once the player reaches this level, they may have completed the game
 
