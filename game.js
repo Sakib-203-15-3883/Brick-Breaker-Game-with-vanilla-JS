@@ -550,3 +550,393 @@ function ballPaddleCollision() {
     ball.speedY = -BALL_SPEED * Math.sin((angle * Math.PI) / 180);
   }
 }
+
+// Function that treats when the ball hits the bricks
+
+function ballBrickCollision() {
+  //The function uses the forEach() method to iterate over each brick in the bricks array.
+
+  bricks.forEach((thisbrick) => {
+    //The right side of the ball (ball.x + ball.radius) is greater than or equal to the left side of the brick (thisbrick.x).
+
+    // The left side of the ball (ball.x - ball.radius) is less than or equal to the right side of the brick (thisbrick.x + thisbrick.width).
+
+    // The bottom side of the ball (ball.y + ball.radius) is greater than or equal to the top side of the brick (thisbrick.y).
+
+    // The top side of the ball (ball.y - ball.radius) is less than or equal to the bottom side of the brick (thisbrick.y + thisbrick.height).
+
+    if (
+      ball.x + ball.radius >= thisbrick.x &&
+      ball.x - ball.radius <= thisbrick.x + thisbrick.width &&
+      ball.y + ball.radius >= thisbrick.y &&
+      ball.y - ball.radius <= thisbrick.y + thisbrick.height
+    ) {
+      //The vertical speed of the ball (ball.speedY) is reversed (-ball.speedY), making it bounce off the brick.
+
+      ball.speedY = -ball.speedY;
+      thisbrick.lifes--;
+
+      if (thisbrick.lifes == 0) {
+        //If the brick's number of lives becomes 0, indicating it has been destroyed, the brick is removed from the bricks array using bricks.splice().
+
+        //The indexOf() method is called on the bricks array to find the index of the thisbrick object.
+
+        //It searches the array and returns the first index at which the thisbrick object is found.
+
+        //         bricks.splice(index, 1):
+
+        // The splice() method is called on the bricks array.
+
+        // It takes two arguments: the index representing the position of the brick, and 1 indicating the number of elements to be removed.
+
+        // By passing the index and 1 as arguments, the splice() method removes the brick at the specified index from the bricks array.
+
+        bricks.splice(bricks.indexOf(thisbrick), 1);
+      }
+    }
+  });
+}
+
+// Function to move the paddle
+
+function movePaddle() {
+  //If the right arrow key (rightArrow) is pressed and the right edge of the paddle (paddle.x + paddle.width) is less than the canvas width, the paddle is allowed to move towards the right by adding the paddle's speed (paddle.speed) to its current position (paddle.x += paddle.speed).
+
+  if (rightArrow && paddle.x + paddle.width < canvas.width) {
+    paddle.x += paddle.speed;
+  } else if (leftArrow && paddle.x > 0) {
+    //If the left arrow key (leftArrow) is pressed and the left edge of the paddle (paddle.x) is greater than 0, the paddle is allowed to move towards the left by subtracting the paddle's speed from its current position (paddle.x -= paddle.speed).
+
+    paddle.x -= paddle.speed;
+  }
+}
+
+// Function to move the ball. Must be called after "movepaddle"
+
+// 1. The moveBall function checks if the ball is currently moving by checking the ball.moving flag. If the ball is moving, the position is updated based on the ball.speedX and ball.speedY values. If the ball is not moving, its position is reset to the center of the paddle.
+
+// 2.  If the ball is moving (ball.moving is true), the code increments the ball's x coordinate by ball.speedX and the y coordinate by ball.speedY. This updates the position of the ball based on its current speed. The ball.speedX and ball.speedY determine the direction and magnitude of the ball's movement.
+
+// 3. If the ball is not moving (ball.moving is false), the code sets the ball's x coordinate to the center of the paddle. This ensures that the ball remains attached to the paddle until the player initiates its movement.
+
+function moveBall() {
+  if (ball.moving) {
+    ball.x += ball.speedX;
+    ball.y += ball.speedY;
+  } else {
+    ball.x = paddle.x + paddle.width / 2;
+  }
+}
+
+// Function to draw the paddle
+
+// ctx.beginPath() starts a new path or subpath for drawing.
+
+// ctx.rect(paddle.x, paddle.y, paddle.width, paddle.height) defines a rectangular shape for the paddle. It takes four arguments:
+
+// paddle.x is the x-coordinate of the top-left corner of the paddle.
+// paddle.y is the y-coordinate of the top-left corner of the paddle.
+// paddle.width is the width of the paddle.
+// paddle.height is the height of the paddle.
+// ctx.fillStyle = PADDLE_FILL sets the fill color of the paddle. PADDLE_FILL is a constant representing the fill color value.
+
+// ctx.fill() fills the paddle shape with the specified fill color.
+
+// ctx.lineWidth = PADDLE_STROKE_WIDTH sets the width of the paddle's stroke (outline) to the specified value. PADDLE_STROKE_WIDTH is a constant representing the stroke width value.
+
+// ctx.strokeStyle = PADDLE_STROKE sets the color of the paddle's stroke. PADDLE_STROKE is a constant representing the stroke color value.
+
+// ctx.stroke() draws the stroke (outline) of the paddle.
+
+// ctx.closePath() closes the current path.
+
+function drawPaddle() {
+  ctx.beginPath();
+  ctx.rect(paddle.x, paddle.y, paddle.width, paddle.height);
+  ctx.fillStyle = PADDLE_FILL;
+  ctx.fill();
+  ctx.lineWidth = PADDLE_STROKE_WIDTH;
+  ctx.strokeStyle = PADDLE_STROKE;
+  ctx.stroke();
+  ctx.closePath();
+}
+
+// Function to draw the ball
+
+// ctx.beginPath() starts a new path or subpath for drawing.
+
+// ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2) defines a circular shape for the ball. It takes five arguments:
+
+// ball.x is the x-coordinate of the center of the ball.
+// ball.y is the y-coordinate of the center of the ball.
+// ball.radius is the radius of the ball.
+// 0 represents the starting angle of the arc in radians (0 radians corresponds to the rightmost point of the circle).
+// Math.PI * 2 represents the ending angle of the arc in radians (Math.PI * 2 radians corresponds to a full circle).
+// ctx.fillStyle = BALL_COLOR sets the fill color of the ball. BALL_COLOR is a constant representing the fill color value.
+
+// ctx.strokeStyle = BALL_STROKE sets the color of the ball's stroke (outline). BALL_STROKE is a constant representing the stroke color value.
+
+// ctx.lineWidth = BALL_STROKE_WIDTH sets the width of the ball's stroke (outline) to the specified value. BALL_STROKE_WIDTH is a constant representing the stroke width value.
+
+// ctx.fill() fills the ball shape with the specified fill color.
+
+// ctx.stroke() draws the stroke (outline) of the ball.
+
+// ctx.closePath() closes the current path.
+
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+  ctx.fillStyle = BALL_COLOR;
+  ctx.strokeStyle = BALL_STROKE;
+  ctx.lineWidth = BALL_STROKE_WIDTH;
+  ctx.fill();
+  ctx.stroke();
+  ctx.closePath();
+}
+
+// Function to draw the bricks
+
+// The function uses the forEach() method to iterate over each brick in the bricks array.
+
+// Inside the loop, there is a switch statement that checks the value of thisbrick.lifes, which represents the number of remaining lives of the brick.
+
+// Depending on the value of thisbrick.lifes, the switch statement sets the fill and stroke styles for the brick. Each case corresponds to a different level of brick strength, represented by different fill and stroke styles.
+
+// After setting the fill and stroke styles, the function starts a new path with ctx.beginPath().
+
+// ctx.rect(thisbrick.x, thisbrick.y, thisbrick.width, thisbrick.height) defines a rectangle shape for the brick. It takes four arguments:
+
+// thisbrick.x is the x-coordinate of the top-left corner of the brick.
+// thisbrick.y is the y-coordinate of the top-left corner of the brick.
+// thisbrick.width is the width of the brick.
+// thisbrick.height is the height of the brick.
+// ctx.fill() fills the brick shape with the specified fill color.
+
+// ctx.lineWidth = BRICK_STROKE_WIDTH sets the width of the brick's stroke (outline) to the specified value. BRICK_STROKE_WIDTH is a constant representing the stroke width value.
+
+// ctx.stroke() draws the stroke (outline) of the brick.
+
+// ctx.closePath() closes the current path.
+
+// By executing this code, the drawBricks() function will iterate over each brick in the bricks array and draw a rectangle shape for each brick on the canvas. The fill and stroke styles of the bricks will be set based on their remaining lives (thisbrick.lifes).
+
+function drawBricks() {
+  bricks.forEach((thisbrick) => {
+    switch (thisbrick.lifes) {
+      case 1:
+        ctx.fillStyle = NORMAL_BRICK_FILL;
+        ctx.strokeStyle = NORMAL_BRICK_STROKE;
+        break;
+      case 2:
+        ctx.fillStyle = MID_STRONG_BRICK_FILL;
+        ctx.strokeStyle = MID_STRONG_BRICK_STROKE;
+        break;
+      case 3:
+        ctx.fillStyle = STRONG_BRICK_FILL;
+        ctx.strokeStyle = STRONG_BRICK_STROKE;
+        break;
+      case 4:
+        ctx.fillStyle = SUPER_STRONG_BRICK_FILL;
+        ctx.strokeStyle = SUPER_STRONG_BRICK_STROKE;
+        break;
+    }
+
+    ctx.beginPath();
+    ctx.rect(thisbrick.x, thisbrick.y, thisbrick.width, thisbrick.height);
+    ctx.fill();
+    ctx.lineWidth = BRICK_STROKE_WIDTH;
+    ctx.stroke();
+    ctx.closePath();
+  });
+}
+
+// Function to show current number of lifes and current level
+function showLifesLevel() {
+  ctx.font = "25px Lato";
+
+  ctx.fillStyle = "white";
+  ctx.fillText("Level: " + CURRENT_LEVEL + "/" + MAX_LEVEL, 8, 16); //position score on the x,y axis of the canvas
+  ctx.fillText("Lifes: " + LIFES, 840, 16); //position score on the x,y axis of the canvas
+}
+
+// Function to start another level when the player wins the current level
+
+function winLevel() {
+  if (CURRENT_LEVEL > MAX_LEVEL) {
+    alert("You Win!");
+    resetGame();
+  } else if (bricks.length == 0) {
+    CURRENT_LEVEL++;
+    setBricksByLevel(CURRENT_LEVEL);
+    resetBall();
+  }
+}
+
+function resetGame() {
+  LIFES = 5;
+  CURRENT_LEVEL = 1;
+  setBricksByLevel(CURRENT_LEVEL);
+  resetBall();
+  leftArrow = false;
+  rightArrow = false;
+}
+
+//// Function to set the bricks by level
+
+function setBricksByLevel(level) {
+  let positions;
+  switch (level) {
+    case 1:
+      positions = level1;
+      break;
+    case 2:
+      positions = level2;
+      break;
+    case 3:
+      positions = level3;
+      break;
+    case 4:
+      positions = level4;
+      break;
+    case 5:
+      positions = level5;
+      break;
+    case 6:
+      positions = level6;
+      break;
+    default:
+      positions = [];
+      break;
+  }
+
+  bricks = [];
+
+  //The code uses nested for loops to iterate over the rows and columns of the positions array. The outer loop iterates over the rows, while the inner loop iterates over the columns within each row.
+
+  for (let row = 0; row < positions.length; row++) {
+    for (let column = 0; column < positions[row].length; column++) {
+      //Inside the loops, a new brick object is created using let newBrick = Object.assign({}, brick). This creates a copy of the brick object, ensuring that each brick has its own separate properties and doesn't reference the same object.
+
+      //Object.assign() is a built-in JavaScript method used to copy the values of all enumerable properties from one or more source objects to a target object. It takes in two or more parameters: the target object to which the properties will be copied, and one or more source objects from which the properties will be taken.
+
+      // In this case, the target object is an empty object literal {}, which serves as a blank canvas for creating a new brick object.
+
+      // The brick object is the source object from which the properties will be copied. It likely contains predefined properties and values that define the characteristics of a brick in the game.
+
+      // By using Object.assign({}, brick), a shallow copy of the brick object is created. The empty object {} serves as the target, and the properties from brick are copied onto it. This ensures that newBrick is a distinct object with its own set of properties, independent of the original brick object.
+
+      // Essentially, this line creates a new brick object based on the brick object but ensures that any modifications made to newBrick won't affect the original brick object.
+
+      let newBrick = Object.assign({}, brick);
+
+      //The x coordinate of the new brick is calculated using the column index. It determines the horizontal position of the brick within the game area. The calculation takes into account the width of each brick, the total width of the canvas, and the number of bricks in the current row. This calculation ensures that the bricks are evenly spaced within the available width.
+
+      //First, the expression (canvas.width - BRICK_WIDTH * positions[row].length) is evaluated.
+      // Then, the result is multiplied by BRICK_WIDTH.
+      // Next, the expression (positions[row].length + 1) is evaluated.
+      // Finally, the result of the division (canvas.width - BRICK_WIDTH * positions[row].length) / (positions[row].length + 1) is added to BRICK_WIDTH.
+      // The result of this entire sub-expression is then multiplied by column.
+      // (canvas.width - BRICK_WIDTH * positions[row].length) / (positions[row].length + 1)
+
+      // This sub-expression calculates a value based on the length of the positions[row] array.
+      // (canvas.width - BRICK_WIDTH * positions[row].length) / (positions[row].length + 1)
+
+      // This sub-expression calculates a value based on the length of the positions[row] array.
+      // newBrick.x = column * (...) + (...)
+
+      // Finally, the two sub-expressions are added to calculate the final value of newBrick.x.
+
+      newBrick.x =
+        column *
+          (BRICK_WIDTH +
+            (canvas.width - BRICK_WIDTH * positions[row].length) /
+              (positions[row].length + 1)) +
+        (canvas.width - BRICK_WIDTH * positions[row].length) /
+          (positions[row].length + 1);
+
+      //The y coordinate of the new brick is calculated using the row index. It determines the vertical position of the brick within the game area. The calculation takes into account the height of each brick, the distance between rows, and an offset value. This calculation ensures that the bricks are properly positioned in the vertical direction.
+
+      newBrick.y =
+        row * (BRICK_HEIGHT + BRICK_DISTANCE_Y) +
+        BRICK_DISTANCE_Y +
+        BRICK_OFFSET_Y;
+
+      //The lifes property of the new brick is assigned the value from the positions array, which corresponds to the number of hits required to destroy the brick.
+
+      newBrick.lifes = positions[row][column];
+
+      //Finally, the new brick object is added to the bricks array using bricks.push(newBrick). This adds the newly created brick to the array, effectively populating it with the bricks for the current level.
+
+      bricks.push(newBrick);
+    }
+  }
+}
+
+// Function to end game when the player loses all lifes
+function gameOver() {
+  if (LIFES == 0) {
+    alert("Game Over");
+    resetGame();
+  }
+}
+
+//=================== EVENT LISTENERS ====================
+
+const leftButton = document.getElementById("left");
+const rightButton = document.getElementById("right");
+const startButton = document.getElementById("start");
+
+console.log(leftButton);
+console.log(rightButton);
+console.log(startButton);
+
+/////////// Keyboard event listener////////////////
+
+// Event listener to move the paddle when the left or right arrow is pressed
+
+document.addEventListener("keydown", function (event) {
+  const keyCode = event.code;
+  if (keyCode === "ArrowLeft" || keyCode === "KeyA") {
+    leftArrow = true;
+  } else if (keyCode === "ArrowRight" || keyCode === "KeyD") {
+    rightArrow = true;
+  } else if (keyCode === "Space") {
+    ball.moving = true;
+  }
+});
+
+// Event listener to stop the paddle when the left or right arrow is released
+document.addEventListener("keyup", function (event) {
+  const keyCode = event.code;
+  if (keyCode === "ArrowLeft" || keyCode === "KeyA") {
+    leftArrow = false;
+  } else if (keyCode === "ArrowRight" || keyCode === "KeyD") {
+    rightArrow = false;
+  }
+});
+
+///////////////// Touch event listener
+
+// Event listener to move the paddle when the left or right touch buttons are pressed
+leftButton.addEventListener("touchstart", function (event) {
+  leftArrow = true;
+});
+
+rightButton.addEventListener("touchstart", function (event) {
+  rightArrow = true;
+});
+
+// Event listener to stop the paddle when the left or right touch buttons are released
+leftButton.addEventListener("touchend", function (event) {
+  leftArrow = false;
+});
+
+rightButton.addEventListener("touchend", function (event) {
+  rightArrow = false;
+});
+
+// Event listener to start the game when the touch start button is pressed
+startButton.addEventListener("touchstart", function (event) {
+  ball.moving = true;
+});
