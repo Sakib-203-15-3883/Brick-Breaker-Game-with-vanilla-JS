@@ -25,8 +25,8 @@
 
 .button {
   display: inline-block;
-  padding: 10px 20px;
-  font-size: 35px;
+  padding: 30px 20px;
+  font-size: 30px;
   text-align: center;
   text-decoration: none;
   background-color: #4caf50;
@@ -41,16 +41,21 @@
   position: absolute;
   bottom: 10px;
   left: 10px;
+  font-size: 50px;
+  font-weight: bolder;
 }
 
 #right {
   position: absolute;
   bottom: 10px;
   right: 10px;
+  font-size: 50px;
+  font-weight: bolder;
 }
 
 #start {
   position: absolute;
   bottom: 10px;
-  right: 40%;
+  right: 35%;
+  font-weight: bolder;
 }

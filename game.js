@@ -13,7 +13,7 @@ console.log(ctx);
 
 // scaling up the canvas allows for larger game elements such as bricks, paddle, and ball.
 
-let scale = 3;
+let scale = 4;
 
 //By increasing the canvas width, you're effectively enlarging the game area horizontally. This can provide more space for the bricks to be positioned and the paddle to move.
 
