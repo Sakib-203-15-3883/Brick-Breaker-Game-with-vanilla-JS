@@ -13,7 +13,7 @@ console.log(ctx);
 
 // scaling up the canvas allows for larger game elements such as bricks, paddle, and ball.
 
-let scale = 4;
+let scale = 5;
 
 //By increasing the canvas width, you're effectively enlarging the game area horizontally. This can provide more space for the bricks to be positioned and the paddle to move.
 
@@ -27,15 +27,15 @@ console.log(canvas.height);
 
 // This variable represents the number of lives the player has
 
-let LIFES = 5;
+let LIFES = 10;
 
 //This variable indicates the current level the player is on.  The current level helps keep track of the player's progress and determines the arrangement and difficulty of the bricks.
 
-let CURRENT_LEVEL = 5;
+let CURRENT_LEVEL = 9;
 
 // This variable represents the maximum level available in the game. It defines the highest level that the player can reach. Once the player reaches this level, they may have completed the game
 
-let MAX_LEVEL = 6;
+let MAX_LEVEL = 10;
 
 //This creates a new Audio object called GAME_SONG. In the context of a brick breaker game
 
@@ -76,7 +76,7 @@ console.log(PADDLE_STROKE);
 
 //This constant determines the speed at which the paddle moves horizontally. It represents the number of pixels the paddle will shift when the player controls its movement using the arrow keys or any other input method.
 
-const PADDLE_SPEED = 8;
+const PADDLE_SPEED = 10;
 
 // paddle configs
 
@@ -104,11 +104,11 @@ let paddle = {
 
 //This constant determines the radius of the ball. It specifies the size of the ball as a circular object.
 
-const BALL_RADIUS = 10;
+const BALL_RADIUS = 20;
 
 //This constant determines the initial speed of the ball. It specifies how fast the ball moves in pixels per frame or time unit.
 
-const BALL_SPEED = 3;
+const BALL_SPEED = 5;
 const BALL_COLOR = "#00F19D";
 const BALL_STROKE = "#fff ";
 const BALL_STROKE_WIDTH = 5;
@@ -243,6 +243,38 @@ const level6 = [
   [2, 2, 4, 4, 4, 4, 2, 2],
   [1, 1, 4, 4, 4, 4, 1, 1],
   [3, 3, 3, 3, 3, 3, 3, 3],
+];
+
+const level7 = [
+  [3, 3, 3, 3, 3, 3, 3, 3],
+  [1, 1, 4, 3, 4, 4, 1, 1],
+  [2, 2, 4, 4, 5, 4, 2, 2],
+  [1, 1, 4, 4, 4, 4, 1, 1],
+  [4, 3, 3, 3, 3, 3, 3, 3],
+];
+
+const level8 = [
+  [3, 3, 3, 3, 3, 2, 3, 3],
+  [1, 5, 4, 2, 7, 4, 8, 1],
+  [2, 2, 4, 6, 4, 4, 2, 2],
+  [1, 1, 4, 4, 4, 4, 1, 1],
+  [6, 3, 3, 4, 3, 3, 3, 3],
+];
+
+const level9 = [
+  [3, 3, 30, 3, 3, 3, 3, 3],
+  [1, 1, 4, 7, 4, 4, 1, 1],
+  [2, 2, 4, 4, 4, 4, 2, 2],
+  [1, 1, 5, 4, 4, 4, 1, 1],
+  [3, 3, 3, 3, 7, 3, 3, 3],
+];
+
+const level10 = [
+  [3, 3, 30, 3, 3, 30, 3, 3],
+  [1, 10, 4, 4, 4, 4, 1, 1],
+  [2, 2, 4, 4, 4, 4, 2, 2],
+  [1, 1, 4, 4, 4, 8, 1, 1],
+  [3, 3, 10, 3, 3, 3, 3, 3],
 ];
 
 //=================== FUNCTIONS ====================
@@ -804,6 +836,18 @@ function setBricksByLevel(level) {
       break;
     case 6:
       positions = level6;
+      break;
+    case 7:
+      positions = level7;
+      break;
+    case 8:
+      positions = level8;
+      break;
+    case 9:
+      positions = level9;
+      break;
+    case 10:
+      positions = level10;
       break;
     default:
       positions = [];
