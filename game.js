@@ -31,7 +31,7 @@ let LIFES = 10;
 
 //This variable indicates the current level the player is on.  The current level helps keep track of the player's progress and determines the arrangement and difficulty of the bricks.
 
-let CURRENT_LEVEL = 9;
+let CURRENT_LEVEL = 5;
 
 // This variable represents the maximum level available in the game. It defines the highest level that the player can reach. Once the player reaches this level, they may have completed the game
 
@@ -56,7 +56,7 @@ const PADDLE_HEIGHT = 20;
 
 // This constant specifies the width of the paddle in pixels. It determines the horizontal size of the paddle, indicating how much area it covers on the game screen.
 
-const PADDLE_WIDTH = 120;
+const PADDLE_WIDTH = 220;
 
 // This constant represents the margin or empty space between the bottom of the game screen and the paddle. It helps create a visual separation between the paddle and the boundary of the gameplay area.
 
@@ -67,7 +67,7 @@ const PADDLE_FILL = "#fff";
 
 // This constant specifies the width of the stroke or outline of the paddle in pixels. It determines the thickness of the border around the paddle.
 
-const PADDLE_STROKE_WIDTH = 2.0;
+const PADDLE_STROKE_WIDTH = 7.0;
 
 //This constant represents the color of the stroke or outline of the paddle. In this case, #807d7a is a hexadecimal color code. The stroke color defines the color used to draw the border of the paddle.
 
@@ -76,7 +76,7 @@ console.log(PADDLE_STROKE);
 
 //This constant determines the speed at which the paddle moves horizontally. It represents the number of pixels the paddle will shift when the player controls its movement using the arrow keys or any other input method.
 
-const PADDLE_SPEED = 10;
+const PADDLE_SPEED = 15;
 
 // paddle configs
 
@@ -108,7 +108,7 @@ const BALL_RADIUS = 20;
 
 //This constant determines the initial speed of the ball. It specifies how fast the ball moves in pixels per frame or time unit.
 
-const BALL_SPEED = 5;
+const BALL_SPEED = 6;
 const BALL_COLOR = "#00F19D";
 const BALL_STROKE = "#fff ";
 const BALL_STROKE_WIDTH = 5;
@@ -169,7 +169,7 @@ const STRONG_BRICK_STROKE = "#001351";
 const SUPER_STRONG_BRICK_FILL = "#f78501";
 const SUPER_STRONG_BRICK_STROKE = "#a75501";
 
-//This line sets the stroke width for the bricks to 2.5 pixels. It assigns the value 10 to the constant BRICK_STROKE_WIDTH.
+//This line sets the stroke width for the bricks to 10 pixels. It assigns the value 10 to the constant BRICK_STROKE_WIDTH.
 
 const BRICK_STROKE_WIDTH = 10;
 
@@ -194,7 +194,7 @@ let bricks = [];
 
 //==================== LEVELS =====================
 
-//This code defines six levels for the game, each represented by a 2-dimensional array.
+//This code defines 10 levels for the game, each represented by a 2-dimensional array.
 
 //level 1 represents the first level. It has two rows, and each row contains eight bricks. The value 1 in the array represents a normal brick with one life or hit required to break it.
 
@@ -402,7 +402,7 @@ function ballWallCollision() {
 
   if (ball.y - ball.radius < 0) {
     ball.speedY = -ball.speedY;
-  }
+  } 
 
   // This if statement checks if the ball's position plus its radius exceeds or equals the height of the canvas. If it does, it means the ball has collided with the floor. In this case, the loseLife() function is called, which typically reduces the player's remaining lives or performs some game-related actions when the ball touches the bottom.
 
@@ -623,7 +623,7 @@ function ballBrickCollision() {
 
         // By passing the index and 1 as arguments, the splice() method removes the brick at the specified index from the bricks array.
 
-        bricks.splice(bricks.indexOf(thisbrick), 1);
+        bricks.splice(bricks.indexOf(thisbrick), 1); 
       }
     }
   });
@@ -877,10 +877,15 @@ function setBricksByLevel(level) {
       //The x coordinate of the new brick is calculated using the column index. It determines the horizontal position of the brick within the game area. The calculation takes into account the width of each brick, the total width of the canvas, and the number of bricks in the current row. This calculation ensures that the bricks are evenly spaced within the available width.
 
       //First, the expression (canvas.width - BRICK_WIDTH * positions[row].length) is evaluated.
+
       // Then, the result is multiplied by BRICK_WIDTH.
+
       // Next, the expression (positions[row].length + 1) is evaluated.
+
       // Finally, the result of the division (canvas.width - BRICK_WIDTH * positions[row].length) / (positions[row].length + 1) is added to BRICK_WIDTH.
+
       // The result of this entire sub-expression is then multiplied by column.
+
       // (canvas.width - BRICK_WIDTH * positions[row].length) / (positions[row].length + 1)
 
       // This sub-expression calculates a value based on the length of the positions[row] array.
