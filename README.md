@@ -2,6 +2,8 @@
  
  #Live Link: https://brick-breaker-game-sakib3883.vercel.app/
 
+My explanation on You Tube : https://youtu.be/kne_cHJZD8s
+
 Here is the list of JavaScript topics used in the Brick Breaker game :
 
 1. Event Listeners: Adding event listeners to respond to user input, such as keydown and touch events.
