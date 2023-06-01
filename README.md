@@ -1,6 +1,6 @@
 ﻿# Brick-Breaker-Game
  
- #Live Link: brick-breaker-game-sakib3883.vercel.app/
+ #Live Link: https://brick-breaker-game-sakib3883.vercel.app/
 
 Here is the list of JavaScript topics used in the Brick Breaker game :
 
